@@ -1,9 +1,14 @@
+import logging
+from pathlib import Path
+
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 
 from app.core.config import Settings, get_settings
 from app.receipts.ocr.base import OcrEngine
 from app.receipts.schema import OcrTextResponse
 from app.receipts.service import ReceiptService
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -26,6 +31,15 @@ async def extract_text(
         service: ReceiptService = Depends(get_service),
 ) -> OcrTextResponse:
     image = await file.read()
+
+    logger.info(
+        "이미지 수신 | name=%s | ext=%s | type=%s | size=%.1fKB",
+        file.filename or "(없음)",
+        Path(file.filename).suffix.lower() if file.filename else "(없음)",
+        file.content_type or "(없음)",
+        len(image) / 1024,
+        )
+
     try:
         text = await service.extract_text(image)
     except ValueError as e:
