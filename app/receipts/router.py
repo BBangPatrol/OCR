@@ -8,14 +8,24 @@ from app.receipts.ocr.base import OcrEngine
 from app.receipts.schema import OcrTextResponse
 from app.receipts.service import ReceiptService
 
+from app.receipts.ocr.paddle import PaddleOcrEngine
+
+paddle_engine = PaddleOcrEngine() # paddle 엔진 한 번만 생성해서 재사용
+
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+# 테스트 stub을 위한 엔진
+# def get_engine(settings: Settings = Depends(get_settings)) -> OcrEngine:
+#     from app.receipts.ocr.stub import StubOcrEngine
+#     return StubOcrEngine()
 
-def get_engine(settings: Settings = Depends(get_settings)) -> OcrEngine:
-    from app.receipts.ocr.stub import StubOcrEngine
-    return StubOcrEngine()
+# Paddle OCR을 위한 엔진
+def get_engine(
+        settings: Settings = Depends(get_settings),
+) -> OcrEngine:
+    return paddle_engine
 
 
 def get_service(

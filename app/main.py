@@ -24,4 +24,6 @@ async def health() -> dict[str, str]:
     return {"status": "ok"}
 
 # 실행 버튼이 아닌 터미널에서 다음 명령어를 통해서 실행해야 함
+# 새로운 pc에서 작업하는 경우 의존성을 설치해야 해서 다음 명령어를 수행 후 실행해야 함
+# uv sync
 # uv run uvicorn app.main:app --reload --port 8000
