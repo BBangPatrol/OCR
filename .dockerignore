@@ -1,0 +1,12 @@
+.venv
+.idea
+.git
+.env
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.DS_Store
+OCR.iml
+README.md
